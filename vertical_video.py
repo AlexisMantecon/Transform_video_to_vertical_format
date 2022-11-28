@@ -36,7 +36,6 @@ class vertical_video:
         margen = 0.225
         x1,y1,x2,y2 = (w * margen,1,w*(1-margen),h)
         gameplay = vfx.crop(clip, x1, y1, x2, y2)
-        gameplay.ipython_display()
 
         # Get a blurred background of the cropped gameplay
         gameplay_blurred = gameplay.fl_image(vertical_video.blur)
