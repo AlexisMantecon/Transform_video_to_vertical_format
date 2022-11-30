@@ -42,7 +42,14 @@ class vertical_video:
         gameplay = vfx.crop(clip, x1, y1, x2, y2)
 
         # Get a blurred background of the cropped gameplay
-        gameplay_blurred = gameplay.fl_image(self.blur)
+        margen_y = 0.2
+        gameplay_blurred = vfx.crop(clip,
+                                    x_center=w*0.5,
+                                    width=w/3,
+                                    y1=h*margen_y, y2=h*(1-margen_y)
+                                    )
+        gameplay_blurred = gameplay_blurred.resize(newsize=(h, w))
+        gameplay_blurred = gameplay_blurred.fl_image(self.blur)
         gameplay_blurred = gameplay_blurred.resize(newsize=(h, w))
 
         # Get the cropped video of webcam
