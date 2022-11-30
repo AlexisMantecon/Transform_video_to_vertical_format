@@ -13,7 +13,7 @@ class vertical_video:
     def get_vertical_format(self, input_video_path,
                             output_video_path,
                             codec="h264_nvenc",
-                            bitrate="5000k",
+                            bitrate="15000k",
                             banner_text="",
                             display_webcam=False,
                             logo_path=r"D:\Archivos\ElEmeTv\ImagenesSinFondo\El_EME_TV_SinFondo.png"):
@@ -48,7 +48,6 @@ class vertical_video:
                                     width=w/3,
                                     y1=h*margen_y, y2=h*(1-margen_y)
                                     )
-        gameplay_blurred = gameplay_blurred.resize(newsize=(h, w))
         gameplay_blurred = gameplay_blurred.fl_image(self.blur)
         gameplay_blurred = gameplay_blurred.resize(newsize=(h, w))
 
@@ -96,10 +95,9 @@ class vertical_video:
 
         # Generating the final result
         gameplay_final = CompositeVideoClip(
-            [gameplay_blurred, gameplay, webcam_final])
-        gameplay_final = gameplay_final.resize((h, w))
+            [gameplay_blurred, gameplay, webcam_final], size=(h, w), use_bgclip=True)
 
         gameplay_final.write_videofile(output_video_path,
                                        codec=codec,
                                        bitrate=bitrate,
-                                       threads=4)
+                                       threads=6)
