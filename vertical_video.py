@@ -55,29 +55,32 @@ class vertical_video:
         margen_webcam = 0.25
         webcam = vfx.crop(clip, x_center=w*0.135, y_center=h *
                           0.85, width=w*margen_webcam, height=h*margen_webcam)
-        webcam = webcam.margin(5, color=(136, 53, 175))
+        webcam = webcam.margin(1, color=(136, 53, 175))
         webcam_width = abs(gameplay.size[0]-clip.size[0])
         webcam = webcam.resize(width=webcam_width)
 
-        # Title for the webcam
-        txt_clip = TextClip(banner_text, fontsize=60,
-                            color="white", stroke_color="purple", stroke_width=2)
-        txt_clip = txt_clip.set_pos(
-            ("center", "bottom")).set_duration(clip.duration)
-
-        # Logo for the webcam
         if display_webcam:
             logo = (ImageClip(logo_path)
                     .set_duration(clip.duration)
                     .resize(height=0.35*webcam.size[1])
-                    .set_pos(("left", "bottom")))
-            webcam_final = CompositeVideoClip([webcam, txt_clip, logo])
+                    .set_pos(("left", "top")))
+            webcam_final = CompositeVideoClip([webcam, logo])
         else:
             logo = (ImageClip(logo_path)
                     .set_duration(clip.duration)
                     .resize(height=webcam.size[1])
                     .set_pos(("center", "top")))
-            webcam_final = CompositeVideoClip([logo, txt_clip])
+            webcam_final = logo
+
+        # Title for the webcam
+        txt_clip = TextClip(banner_text,
+                            font='Western Bang Bang Normal',
+                            fontsize=100,
+                            color="white",
+                            stroke_color="purple",
+                            stroke_width=0.5)
+        txt_clip = txt_clip.set_pos(
+            ("center", webcam.size[1] + 25)).set_duration(clip.duration)
 
         # Setting the position of the final webcam or logo
         # center de webcam
@@ -95,7 +98,7 @@ class vertical_video:
 
         # Generating the final result
         gameplay_final = CompositeVideoClip(
-            [gameplay_blurred, gameplay, webcam_final], size=(h, w), use_bgclip=True)
+            [gameplay_blurred, gameplay, webcam_final, txt_clip], size=(h, w), use_bgclip=True)
 
         gameplay_final.write_videofile(output_video_path,
                                        codec=codec,
